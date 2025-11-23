@@ -1,67 +1,44 @@
-"use client";
-import dynamic from "next/dynamic";
-import StationList from "../components/StationList";
-import { useState, useEffect } from "react";
-import "leaflet/dist/leaflet.css";
+'use client';
 
-// โหลด component แผนที่แบบ dynamic
-const BangKhenMap = dynamic(() => import("../components/BangKhenMap"), {
-  ssr: false,
-});
+import BangKhenMap from '../components/BangKhenMap';
+import WeatherBox from '../components/WeatherBox';
+import Forecast from '../components/Forecast';
+import { useState } from 'react';
 
-interface Station {
-  id: string;
-  name: string;
-  lat: number;
-  lon: number;
-  pm25: number;
-  updatedAt: string;
-}
+const HomePage = () => {
+  const [weatherData] = useState({
+    pm25: 40,
+    pressure: 1012,
+    temperature: 30,
+    humidity: 70,
+  });
 
-export default function HomePage() {
-  const [stations, setStations] = useState<Station[]>([]);
-
-  // ตัวอย่างข้อมูลสถานี (จะเปลี่ยนเป็น API จริงได้)
-  useEffect(() => {
-  // จำลองการดึงข้อมูลจาก API
-  const fetchData = async () => {
-    const data = [
-      {
-        id: "1",
-        name: "สวนกีฬารามอินทรา เขตบางเขน",
-        lat: 13.8529,
-        lon: 100.5713,
-        pm25: 17.1,
-        updatedAt: "27 ต.ค. 2568 21:00 น.",
-      },
-      {
-        id: "2",
-        name: "วัดพระศรีมหาธาตุฯ",
-        lat: 13.8852,
-        lon: 100.5914,
-        pm25: 28.3,
-        updatedAt: "27 ต.ค. 2568 21:00 น.",
-      },
-    ];
-
-    // หน่วงเวลาให้เหมือนโหลดข้อมูลจริง
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    setStations(data);
-  };
-
-  fetchData();
-}, []);
-
+  const [forecastData] = useState([
+    { date: 'วันพรุ่งนี้', pm25: 40, pressure: 1012, temperature: 30, humidity: 70 },
+    { date: 'วันถัดไป', pm25: 42, pressure: 1010, temperature: 31, humidity: 65 },
+    { date: 'วันถัดถัดไป', pm25: 38, pressure: 1011, temperature: 29, humidity: 60 },
+    { date: 'วันถัดไปอีก', pm25: 35, pressure: 1013, temperature: 28, humidity: 55 },
+    { date: 'วันถัดถัดไปอีก', pm25: 37, pressure: 1012, temperature: 30, humidity: 58 },
+  ]);
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4 text-amber-950 text-center">
-        PM2.5 เขตบางเขน
-      </h1>
+    <div className="p-6 max-w-7xl mx-auto">
+      {/* แผนที่ */}
+      <BangKhenMap />
 
-      <BangKhenMap stations={stations} />
-      <StationList stations={stations} />
+      {/* Grid WeatherBox */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+        <WeatherBox title="PM2.5" value={weatherData.pm25} unit="µg/m³" />
+        <WeatherBox title="ความกดอากาศ" value={weatherData.pressure} unit="hPa" />
+        <WeatherBox title="ความดัน" value={weatherData.temperature} unit="°C" />
+        <WeatherBox title="ความชื้น" value={weatherData.humidity} unit="%" />
+      </div>
+
+
+      {/* Forecast 5 วัน */}
+      <Forecast data={forecastData} />
     </div>
   );
-}
+};
+
+export default HomePage;

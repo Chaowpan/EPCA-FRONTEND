@@ -70,9 +70,7 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-40 text-lg font-semibold tracking-wide">
           {[
             { name: 'หน้าหลัก', href: '/' },
-            { name: 'รายการ', href: '/list' },
-            { name: 'ข้อมูลย้อนหลัง', href: '/historical_data' },
-            { name: 'โปรไฟล์', href: '/profile' },
+            { name: 'ค้นหา', href: '/search' }
           ].map((item) => (
             <Link
               key={item.name}

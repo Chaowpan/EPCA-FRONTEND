@@ -1,7 +1,13 @@
-"use client";
-import { MapContainer, TileLayer, CircleMarker, Popup, Marker } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+'use client';
+
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+const stationIcon = new L.Icon({
+  iconUrl: '/favicon.ico',
+  iconSize: [25, 25],
+});
 
 interface Station {
   id: string;
@@ -11,66 +17,38 @@ interface Station {
   pm25: number;
 }
 
-interface Props {
-  stations: Station[];
-}
+const stations: Station[] = [
+  // { id: '1', name: 'สถานี A', lat: 13.8563, lon: 100.5843, pm25: 42 },
+  // { id: '2', name: 'สถานี B', lat: 13.8620, lon: 100.5990, pm25: 35 },
+];
 
-// 🔵 สร้างไอคอนสำหรับตำแหน่งของฉัน
-const myLocationIcon = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png", // ไอคอนหมุดสีน้ำเงิน
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-  popupAnchor: [0, -30],
-});
-
-export default function BangKhenMap({ stations }: Props) {
+const BangKhenMap = () => {
   return (
     <MapContainer
-      center={[13.8855, 100.5849]} // จุดกลางบางเขน
-      zoom={14}
-      style={{ width: "100%", height: "400px", borderRadius: "8px" }}
+      center={[13.8563, 100.5843]}
+      zoom={13}
+      style={{
+        height: '300px',
+        width: '100%',
+        borderRadius: '1rem', // ขอบโค้ง
+        boxShadow: '0 4px 20px rgba(0,0,0,0.2)', // เงา
+        border: '1px solid rgba(0,0,0,0.1)' // เส้นขอบบาง ๆ
+      }}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; OpenStreetMap contributors"
       />
-
-      {/* วนลูปแสดงจุดสถานี */}
-      {stations.map((s) => (
-        <CircleMarker
-          key={s.id}
-          center={[s.lat, s.lon]}
-          radius={12}
-          fillOpacity={0.8}
-          color={
-            s.pm25 <= 25
-              ? "green"
-              : s.pm25 <= 37
-              ? "yellow"
-              : s.pm25 <= 50
-              ? "orange"
-              : "red"
-          }
-        >
+      {stations.map((station) => (
+        <Marker key={station.id} position={[station.lat, station.lon]} icon={stationIcon}>
           <Popup>
-            <b>{s.name}</b>
-            <br />
-            PM2.5: {s.pm25} µg/m³
+            {station.name} <br /> PM2.5: {station.pm25}
           </Popup>
-        </CircleMarker>
+        </Marker>
       ))}
-
-      {/* 🔵 จุดตำแหน่งของฉัน: มหาวิทยาลัยศรีปทุม */}
-      <Marker
-        position={[13.8806, 100.5847]} // พิกัด มหาวิทยาลัยศรีปทุม
-        icon={myLocationIcon}
-      >
-        <Popup>
-          📍 <b>ตำแหน่งของฉัน</b>
-          <br />
-          มหาวิทยาลัยศรีปทุม (SPU)
-        </Popup>
-      </Marker>
     </MapContainer>
+
   );
-}
+};
+
+export default BangKhenMap;
