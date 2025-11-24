@@ -30,7 +30,7 @@ const HomePage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
         <WeatherBox title="PM2.5" value={weatherData.pm25} unit="µg/m³" />
         <WeatherBox title="ความกดอากาศ" value={weatherData.pressure} unit="hPa" />
-        <WeatherBox title="ความดัน" value={weatherData.temperature} unit="°C" />
+        <WeatherBox title="อุณหภูมิ" value={weatherData.temperature} unit="°C" />
         <WeatherBox title="ความชื้น" value={weatherData.humidity} unit="%" />
       </div>
 
