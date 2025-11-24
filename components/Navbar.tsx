@@ -67,7 +67,7 @@ const Navbar = () => {
         </div>
 
         {/* Menu Desktop */}
-        <div className="hidden md:flex space-x-40 text-lg font-semibold tracking-wide">
+        {/* <div className="hidden md:flex space-x-40 text-lg font-semibold tracking-wide">
           {[
             { name: 'หน้าหลัก', href: '/' },
             { name: 'ค้นหา', href: '/search' }
@@ -91,7 +91,7 @@ const Navbar = () => {
               {item.name}
             </Link>
           ))}
-        </div>
+        </div> */}
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">
